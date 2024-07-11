@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/marsRocha/retra-microservices/
+          username: marsRocha
+          password: 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
+
+# Eureka
+eureka:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
