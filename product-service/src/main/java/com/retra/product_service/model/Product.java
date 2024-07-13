@@ -1,4 +1,4 @@
-package com.retra.product_service;
+package com.retra.product_service.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
