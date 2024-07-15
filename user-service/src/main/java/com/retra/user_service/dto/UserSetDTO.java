@@ -1,10 +1,8 @@
-package com.retra.user_service;
-
+package com.retra.user_service.dto;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
-public record UserPostDTO (
+public record UserSetDTO(
     String firstName,
     String lastName,
     String email,
