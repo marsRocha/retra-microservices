@@ -55,3 +55,6 @@ resilience4j:
         register-health-indicator: true
         automatic-transition-from-open-to-half-open-enabled: true
         sliding-window-type: count_based
+        # Retry
+        max-attempts: 5
+        wait-duration: 2s
