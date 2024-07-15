@@ -66,9 +66,9 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalStateException(String.format(PRODUCT_NOT_FOUND, productId)));
     }
 
-    //@CircuitBreaker(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
+    @CircuitBreaker(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
     //@Retry(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
-    @RateLimiter(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
+    //@RateLimiter(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
     public ProductWithDetails getProductWithDetails(Long productId) {
 
         Product p = getProductById(productId);
