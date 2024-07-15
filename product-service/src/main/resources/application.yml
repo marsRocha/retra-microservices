@@ -29,3 +29,29 @@ management:
   tracing:
     sampling:
       probability: 1.0
+  # Actuator config
+  health:
+    circuitbreakers:
+      enabled: true # enable health check for actuators
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+# Resilience4J
+resilience4j:
+  circuitbreaker:
+    instances:
+      reviewBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHallOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        register-health-indicator: true
+        automatic-transition-from-open-to-half-open-enabled: true
+        sliding-window-type: count_based
