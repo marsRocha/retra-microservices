@@ -7,6 +7,7 @@ import com.retra.product_service.dto.ProductWithDetails;
 import com.retra.product_service.model.Product;
 import com.retra.review_service.model.Review;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -66,7 +67,8 @@ public class ProductService {
     }
 
     //@CircuitBreaker(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
-    @Retry(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
+    //@Retry(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
+    @RateLimiter(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
     public ProductWithDetails getProductWithDetails(Long productId) {
 
         Product p = getProductById(productId);

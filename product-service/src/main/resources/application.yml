@@ -58,3 +58,10 @@ resilience4j:
         # Retry
         max-attempts: 5
         wait-duration: 2s
+  # Rate limiter
+  ratelimiter:
+    instances:
+      reviewBreaker:
+        timeout-duration: 0
+        limit-refresh-period: 4
+        limit-for-period: 2
