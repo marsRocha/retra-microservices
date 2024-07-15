@@ -6,6 +6,7 @@ import com.retra.product_service.dto.ProductSetDTO;
 import com.retra.product_service.dto.ProductWithDetails;
 import com.retra.product_service.model.Product;
 import com.retra.review_service.model.Review;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalStateException(String.format(PRODUCT_NOT_FOUND, productId)));
     }
 
+    @CircuitBreaker(name="reviewBreaker", fallbackMethod = "reviewBreakerFallback")
     public ProductWithDetails getProductWithDetails(Long productId) {
 
         Product p = getProductById(productId);
@@ -76,5 +78,19 @@ public class ProductService {
                 p.getDescription(),
                 p.getPrice(),
                 reviews);
+    }
+
+    public ProductWithDetails reviewBreakerFallback(Long productId, Throwable t) {
+        Product p = getProductById(productId);
+        List<Review> fallbackReviews = new ArrayList<>();
+        fallbackReviews.add(Review.builder().description("Could not retrieve reviews from Review-Service").build());
+
+        return new ProductWithDetails(
+                p.getId(),
+                p.getName(),
+                p.getDescription(),
+                p.getPrice(),
+                fallbackReviews
+        );
     }
 }

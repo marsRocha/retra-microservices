@@ -20,7 +20,7 @@ public class ProductController {
     private final ProductService productService;
 
     private static final String PRODUCT_CREATE_LOG = "Product was successfully created";
-    private static final String PRODUCT_EDIT_LOG = "Product was edited";
+    private static final String PRODUCT_EDIT_LOG = "Product {} was edited";
     private static final String PRODUCT_DELETE_LOG = "Product {} was deleted";
 
     @GetMapping
@@ -39,7 +39,7 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public void editProduct(@RequestBody ProductSetDTO productSetDTO, @PathVariable Long productId) {
         productService.editProduct(productSetDTO, productId);
-        log.info(PRODUCT_EDIT_LOG);
+        log.info(PRODUCT_EDIT_LOG, productId);
     }
 
     @DeleteMapping(path="/{productId}")
