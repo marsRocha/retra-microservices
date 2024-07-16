@@ -56,7 +56,7 @@ public class UserService {
     }
 
     @Transactional
-    private void editUser(UserSetDTO userSetDTO, Long userId) {
+    public void editUser(UserSetDTO userSetDTO, Long userId) {
         User u = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(String.format(USER_NOT_FOUND, userId)));
 
@@ -77,7 +77,7 @@ public class UserService {
         }
     }
 
-    private void deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         if(!userRepository.existsById(userId)) {
             throw new IllegalStateException(String.format(USER_NOT_FOUND, userId));
         }
