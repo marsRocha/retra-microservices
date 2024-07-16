@@ -5,7 +5,7 @@ import com.retra.product_service.clients.ReviewClient;
 import com.retra.product_service.dto.ProductSetDTO;
 import com.retra.product_service.dto.ProductWithDetails;
 import com.retra.product_service.model.Product;
-import com.retra.review_service.model.Review;
+import com.retra.product_service.model.Review;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;

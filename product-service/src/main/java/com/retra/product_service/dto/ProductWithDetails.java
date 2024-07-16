@@ -1,6 +1,6 @@
 package com.retra.product_service.dto;
 
-import com.retra.review_service.model.Review;
+import com.retra.product_service.model.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
