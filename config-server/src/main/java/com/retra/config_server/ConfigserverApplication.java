@@ -1,4 +1,4 @@
-package com.retra.configserver;
+package com.retra.config_server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

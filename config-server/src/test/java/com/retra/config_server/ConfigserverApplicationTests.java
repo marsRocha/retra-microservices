@@ -1,4 +1,4 @@
-package com.retra.configserver;
+package com.retra.config_server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
