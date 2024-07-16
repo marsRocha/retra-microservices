@@ -1,5 +1,6 @@
 package com.retra.review_service.service;
 
+import com.retra.review_service.messaging.EventProducerConfiguration;
 import com.retra.review_service.repository.ReviewRepository;
 import com.retra.review_service.dto.ReviewSetDTO;
 import com.retra.review_service.model.Review;
@@ -14,6 +15,7 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final EventProducerConfiguration eventProducerConfiguration;
 
     private static final String REVIEW_NOT_FOUND = "Review %d not found";
 
@@ -40,6 +42,8 @@ public class ReviewService {
                 .userId(userId)
                 .build();
         reviewRepository.save(r);
+
+        eventProducerConfiguration.sendMessage(r);
     }
 
     @Transactional
