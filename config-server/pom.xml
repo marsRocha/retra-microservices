@@ -11,7 +11,7 @@
 	<groupId>com.retra</groupId>
 	<artifactId>config-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>configserver</name>
+	<name>config-server</name>
 	<description>Config Server</description>
 	<url/>
 	<licenses>
