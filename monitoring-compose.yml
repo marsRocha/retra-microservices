@@ -1,3 +1,5 @@
+version: '3.7'
+
 services:
   prometheus:
     image: prom/prometheus
@@ -29,7 +31,26 @@ services:
     networks:
       - microservice-network
     restart: unless-stopped
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - microservice-network
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana:/var/lib/grafana
+    restart: unless-stopped
 
 networks:
   microservice-network:
     external: true
+
+volumes:
+  grafana:
