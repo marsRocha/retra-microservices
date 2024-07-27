@@ -29,8 +29,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        // TODO use ignorepatterns on requestMatchers
-                        .requestMatchers("").permitAll()
+                        .requestMatchers(ignorePatterns).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) ->
