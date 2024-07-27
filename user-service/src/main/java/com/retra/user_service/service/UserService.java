@@ -1,10 +1,15 @@
 package com.retra.user_service.service;
 
+import com.retra.user_service.config.JwtService;
 import com.retra.user_service.dto.UserSetDTO;
+import com.retra.user_service.exception.EmailAlreadyUsedException;
+import com.retra.user_service.model.Role;
 import com.retra.user_service.model.User;
 import com.retra.user_service.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +19,9 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     private static final String USER_NOT_FOUND = "User %d not found";
 
@@ -26,12 +34,19 @@ public class UserService {
                 .orElseThrow( () -> new IllegalStateException(String.format(USER_NOT_FOUND, userId)));
     }
 
-    public void createUser(UserSetDTO userSetDTO) {
+    public void createUser(UserSetDTO userSetDTO, Role role) throws EmailAlreadyUsedException {
+        // Check if email is already used
+        if(userRepository.existsByEmail(userSetDTO.email())) {
+            throw new EmailAlreadyUsedException("Email is already being used");
+        }
+
+        // Create user
         User user = User.builder()
                 .firstName(userSetDTO.firstName())
                 .lastName(userSetDTO.lastName())
                 .email(userSetDTO.email())
-                .password(userSetDTO.password())
+                .password(passwordEncoder.encode(userSetDTO.password()))
+                .role(role)
                 .dob(userSetDTO.dob())
                 .build();
 
@@ -54,6 +69,7 @@ public class UserService {
         */
         userRepository.save(user);
     }
+
 
     @Transactional
     public void editUser(UserSetDTO userSetDTO, Long userId) {

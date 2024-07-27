@@ -33,13 +33,6 @@ public class UserController {
         return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody UserSetDTO userSetDTO) {
-        userService.createUser(userSetDTO);
-        log.info(USER_CREATE_LOG);
-    }
-
     @PutMapping(path = "/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void editUser(@RequestBody UserSetDTO userSetDTO, @PathVariable Long userId) {
