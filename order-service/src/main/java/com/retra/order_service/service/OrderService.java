@@ -47,4 +47,40 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalStateException(String.format(ORDER_NOT_FOUND, orderId)));
     }
+
+    public void processOrders(StockCheckMessage stockCheckMessage) {
+        Order o;
+        try {
+            o = getOrderById(stockCheckMessage.getOrderId());
+        } catch (NoDataFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        if(stockCheckMessage.isStockAvailable()) {
+            o.setOrderStatus(OrderStatus.PENDING);
+            orderRepository.save(o);
+
+            //rabbitTemplate.convertAndSend(ordersExchange.getName(), RoutingKeys.ORDER_CONFIRMED.getNotation(), new OrderConfirmedMessage(o));
+        } else {
+            o.setOrderStatus(OrderStatus.REJECTED);
+            orderRepository.save(o);
+
+            //rabbitTemplate.convertAndSend(ordersExchange.getName(), RoutingKeys.ORDER_UPDATED.getNotation(), new OrderStatusUpdateMessage(o));
+        }
+    }
+
+    public void confirmPayment(Long orderId) throws NoDataFoundException {
+        Order order = getOrderById(orderId);
+        order.setOrderStatus(OrderStatus.ACCEPTED);
+        orderRepository.save(order);
+
+        // send notification
+        //rabbitTemplate.convertAndSend(ordersExchange.getName(), RoutingKeys.ORDER_UPDATED.getNotation(), new OrderStatusUpdateMessage(order));
+    }
+
+    // Cancel order after 24 hours if it's still in PENDING status
+    public void cancelOrder(Long orderId) throws NoDataFoundException {
+        Order order = getOrderById(orderId);
+        order.setOrderStatus(OrderStatus.CANCELED);
+    }
 }

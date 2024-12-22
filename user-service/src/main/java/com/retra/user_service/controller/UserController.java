@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/{userId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public void editUser(@RequestBody UserSetDTO userSetDTO, @PathVariable Long userId) {
         userService.editUser(userSetDTO, userId);
         log.info(USER_EDIT_LOG, userId);
